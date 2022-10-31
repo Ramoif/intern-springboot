@@ -27,6 +27,7 @@ public class FileController {
 
     // 本地localhost 服务器ip地址
     private static final String ip = "http://localhost";
+    private static final String onlineIp = "http://localhost";
 
     /**
      * 1、上传接口
