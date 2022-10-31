@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ycsx.demo.mapper.ContractDetailMapper">
+    <!-- 实体字段property 数据库字段column -->
+    <resultMap id="detailMap" type="com.ycsx.demo.entity.ContractDetail">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="contractId" column="contract_id"/>
+        <result property="currentState" column="current_state"/>
+        <result property="comments" column="comments"/>
+        <result property="annexA" column="annex_a"/>
+        <result property="annexB" column="annex_b"/>
+        <result property="annexC" column="annex_c"/>
+        <result property="annexD" column="annex_d"/>
+        <result property="annexE" column="annex_e"/>
+        <result property="annexF" column="annex_f"/>
+        <result property="annexEnd" column="annex_end"/>
+        <result property="endResult" column="end_result"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="contract" javaType="com.ycsx.demo.entity.Contract">
+            <id property="id" column="contract_id"/>
+            <result property="currentState" column="current_state"/>
+            <result property="currentComment" column="current_comment"/>
+            <result property="userId" column="user_id"/>
+            <result property="partA" column="part_a"/>
+            <result property="partB" column="part_b"/>
+            <result property="address" column="address"/>
+            <result property="school" column="school"/>
+            <result property="partCharge" column="part_charge"/>
+            <result property="partPhone" column="part_phone"/>
+            <result property="stuPhone" column="stu_phone"/>
+            <result property="gradeClass" column="grade_class"/>
+            <result property="gradeNum" column="grade_num"/>
+            <result property="startTime" column="start_time"/>
+            <result property="endTime" column="end_time"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+        </association>
+    </resultMap>
+
+    <select id="findDetailPage" resultMap="detailMap">
+        SELECT `contract_detail`.*, `contract`.*
+        from `contract_detail`
+                 left JOIN contract on contract_detail.contract_id = contract.id
+        where `contract_detail`.current_state like concat('%', #{current_state}, '%')
+        order by `contract_detail`.update_time desc
+    </select>
+
+    <select id="findContractDetailPage" resultMap="detailMap">
+        SELECT `contract_detail`.*, `contract`.*
+        from `contract_detail`
+                 left JOIN contract on contract_detail.contract_id = contract.id
+        where `contract_detail`.current_state like concat('%', #{current_state}, '%')
+        order by `contract_detail`.update_time desc
+    </select>
+
+    <select id="getDetailByUserId" resultMap="detailMap">
+        SELECT `contract_detail`.*, `contract`.*
+        from `contract_detail`
+                 left JOIN contract on contract_detail.user_id = contract.user_id
+        where `contract`.user_id = #{userId}
+        order by `contract_detail`.update_time desc
+    </select>
+    <select id="getAllDetails" resultType="com.ycsx.demo.entity.ContractDetail">
+        SELECT `contract_detail`.*, `contract`.*
+        from `contract_detail`
+                 left JOIN contract on contract_detail.contract_id = contract.id
+    </select>
+
+
+</mapper>
